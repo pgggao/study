@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -38,6 +40,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void requestUrlData(View view){
+        EditText editText = (EditText) findViewById(R.id.inputData);
+        String data = editText.getText().toString();
+        Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
 
     }
 }
