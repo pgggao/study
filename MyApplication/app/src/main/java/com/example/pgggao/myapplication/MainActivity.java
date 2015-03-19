@@ -2,6 +2,7 @@ package com.example.pgggao.myapplication;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,25 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EditText editText = (EditText) findViewById(R.id.inputData);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                EditText text = (EditText) v;
+                String data = text.getText().toString();
+                    String guide_url = getResources().getString(R.string.url_guide);
+                if(hasFocus){
+                    if (guide_url.equals(data)){
+                        text.setText("");
+                    }
+                }else{
+                    if(data==null||"".equals(data.trim())){
+                        text.setText(guide_url);
+                    }
+                }
+            }
+        });
+
     }
 
 
@@ -42,7 +62,9 @@ public class MainActivity extends ActionBarActivity {
     public void requestUrlData(View view){
         EditText editText = (EditText) findViewById(R.id.inputData);
         String data = editText.getText().toString();
-        Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
 
     }
 }
