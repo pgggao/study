@@ -7,10 +7,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity {
+
+   private String guide_url = getResources().getString(R.string.url_guide);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +32,6 @@ public class MainActivity extends ActionBarActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 EditText text = (EditText) v;
                 String data = text.getText().toString();
-                    String guide_url = getResources().getString(R.string.url_guide);
                 if(hasFocus){
                     if (guide_url.equals(data)){
                         text.setText("");
@@ -62,9 +71,22 @@ public class MainActivity extends ActionBarActivity {
     public void requestUrlData(View view){
         EditText editText = (EditText) findViewById(R.id.inputData);
         String data = editText.getText().toString();
-        Toast toast = Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,0);
-        toast.show();
+        if(data==null||"".equals(data.trim())||guide_url.equals(data)){
+            Toast toast = Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+        }else{
+            HttpGet httpGet = new HttpGet(data);
+            try {
+                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                if(httpResponse.getStatusLine().getStatusCode()==200){
+                  String content =   EntityUtils.toByteArray(httpResponse.getEntity()).toString();
+                }
+                RelativeLayout RelativeLayout= (android.widget.RelativeLayout) findViewById(R.id.layout);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }
